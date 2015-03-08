@@ -1,4 +1,4 @@
-﻿Build started 3/8/2015 3:36:27 PM.
+﻿Build started 3/8/2015 4:00:11 PM.
      1>Project "J:\Justin\My Documents\GitHub\Myo_Fruit\samples\hello-myo-VisualStudio2013.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\SFML\include /I..\include /Zi /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D _CONSOLE /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt "hello-myo.cpp"
@@ -38,4 +38,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.11
+Time Elapsed 00:00:01.07
