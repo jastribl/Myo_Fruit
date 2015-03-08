@@ -1,0 +1,37 @@
+﻿Build started 3/8/2015 1:12:02 PM.
+     1>Project "J:\Justin\Desktop\myo-sdk-win-0.8.1\samples\hello-myo-VisualStudio2013.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\SFML\include /I..\include /Zi /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D _CONSOLE /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt "hello-myo.cpp"
+         hello-myo.cpp
+     1>j:\justin\desktop\myo-sdk-win-0.8.1\samples\Fruit.h(17): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>j:\justin\desktop\myo-sdk-win-0.8.1\samples\Fruit.h(29): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>j:\justin\desktop\myo-sdk-win-0.8.1\samples\Fruit.h(30): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>hello-myo.cpp(71): warning C4553: '==' : operator has no effect; did you intend '='?
+     1>hello-myo.cpp(124): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>hello-myo.cpp(159): warning C4244: 'argument' : conversion from 'float' to 'unsigned int', possible loss of data
+     1>hello-myo.cpp(196): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>hello-myo.cpp(209): warning C4018: '<' : signed/unsigned mismatch
+     1>hello-myo.cpp(211): warning C4018: '<' : signed/unsigned mismatch
+     1>hello-myo.cpp(249): warning C4018: '<' : signed/unsigned mismatch
+     1>hello-myo.cpp(256): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>hello-myo.cpp(257): warning C4018: '<' : signed/unsigned mismatch
+     1>hello-myo.cpp(259): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>hello-myo.cpp(275): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>hello-myo.cpp(277): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>hello-myo.cpp(278): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>hello-myo.cpp(279): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"J:\Justin\Desktop\myo-sdk-win-0.8.1\samples\Release\hello-myo-VisualStudio2013.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\lib /LIBPATH:C:\SFML\lib myo32.lib "sfml-graphics.lib" "sfml-window.lib" "sfml-system.lib" "sfml-audio.lib" "sfml-window-d.lib" "sfml-system-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"J:\Justin\Desktop\myo-sdk-win-0.8.1\samples\Release\hello-myo-VisualStudio2013.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"J:\Justin\Desktop\myo-sdk-win-0.8.1\samples\Release\hello-myo-VisualStudio2013.lib" /MACHINE:X86 /SAFESEH Release\Fruit.obj
+         "Release\hello-myo.obj"
+     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:ICF' specification
+         hello-myo-VisualStudio2013.vcxproj -> J:\Justin\Desktop\myo-sdk-win-0.8.1\samples\Release\hello-myo-VisualStudio2013.exe
+       PostBuildEvent:
+         COPY "..\bin\myo32.dll" "J:\Justin\Desktop\myo-sdk-win-0.8.1\samples\Release\"
+               
+         :VCEnd
+                 1 file(s) copied.
+     1>Done Building Project "J:\Justin\Desktop\myo-sdk-win-0.8.1\samples\hello-myo-VisualStudio2013.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.03
