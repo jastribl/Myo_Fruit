@@ -56,8 +56,8 @@ public:
 		armX = ((yaw + (float)M_PI) / (M_PI * 2.0f) * 18);
 		armY = ((pitch + (float)M_PI / 2.0f) / M_PI * 18);
 		if (gameRunning) {
-			sordX = (screenWidth - ((armX / width)* screenWidth)) * 2;
-			sordY = (screenHeight - ((armY / height)* screenHeight)) * 2;
+			sordX = (screenWidth - ((armX / width)* screenWidth)) * 4;
+			sordY = (screenHeight - ((armY / height)* screenHeight)) * 4;
 		}
 	}
 
@@ -314,7 +314,6 @@ int main(int argc, char** argv) {
 				boundsSet = 0;
 				gameRunning = false;
 				int numFruit = 6;
-				vector<Fruit*> fruit;
 				armX = 0;
 				armY = 0;
 				sordX = 1000;
