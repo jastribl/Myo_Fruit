@@ -158,7 +158,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Fruit.cpp" />
     <ClCompile Include="hello-myo.cpp" />
   </ItemGroup>
   <ItemGroup>

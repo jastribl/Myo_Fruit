@@ -9,9 +9,6 @@
     <ClCompile Include="hello-myo.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
-    <ClCompile Include="Fruit.cpp">
-      <Filter>Source Code</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h">

@@ -63,13 +63,15 @@ public:
 
 	void onPose(myo::Myo* myo, uint64_t timestamp, myo::Pose pose) {
 		currentPose = pose;
-		if (boundsSet < 2 && currentPose == myo::Pose::fingersSpread) {
+		if (boundsSet < 2 && currentPose == myo::Pose::fist) {
 			if (boundsSet == 0) {
 				width = armX;
 				height = armY;
 			} else if (boundsSet == 1) {
 				width == yaw_x;
 				height -= pitch_y;
+				cout << "Height: " << height << endl;
+				cout << "width: " << width << endl;
 				gameRunning = true;
 			}
 			boundsSet++;
@@ -185,8 +187,13 @@ int main(int argc, char** argv) {
 					window->close();
 				if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
 					window->close();
-				if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P))
+				if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P)) {
 					gameRunning = !gameRunning;
+					boundsSet = 0;
+					for (size_t i = 0; i < fruit.size(); i++) {
+						delete fruit[i];
+					}
+				}
 			}
 			window->draw(background);
 			if (boundsSet == 0) {
@@ -201,7 +208,9 @@ int main(int argc, char** argv) {
 						bool isBomb = rand() % 5 == 1;
 						int type = (rand() % numFruit) * 3;
 						Fruit *newFruit = new Fruit(isBomb, type, isBomb ? bombTexture1 : (fruitTextures[type]));
-						newFruit->setOrigin(newFruit->getOrigin().x + 25, newFruit->getOrigin().y + 25);
+						newFruit->split = false;
+						newFruit->dead = false;
+						newFruit->setOrigin(newFruit->getOrigin().x + 37.5, newFruit->getOrigin().y + 37.5);
 						fruit.push_back(newFruit);
 						clock.restart();
 						cout << "added fruit" << endl;
@@ -209,18 +218,18 @@ int main(int argc, char** argv) {
 					for (int i = 0; i < fruit.size(); i++) {
 						fruit[i]->fly();
 						for (int j = 0; j < pointers.size(); j++) {
-							if (pointers[j] && !fruit[i]->dead && !fruit[i]->split && abs(fruit[i]->getPosition().x - pointers[j]->x) < 10 && abs(fruit[i]->getPosition().y - pointers[j]->y) < 10) {
+							if (pointers[j] && !fruit[i]->dead && !fruit[i]->split && abs(fruit[i]->getPosition().x - pointers[j]->x) < 37.5 && abs(fruit[i]->getPosition().y - pointers[j]->y) < 37.5) {
 								Fruit *newFruit = new Fruit(fruit[i]->isBomb, fruit[i]->type, fruit[i]->isBomb ? bombTexture2 : (fruitTextures[fruit[i]->type + 1]));
 								newFruit->ySpeed = fruit[i]->ySpeed - 0.5;
 								newFruit->setPosition(fruit[i]->getPosition());
-								newFruit->setOrigin(newFruit->getOrigin().x + 25, newFruit->getOrigin().y + 25);
+								newFruit->setOrigin(newFruit->getOrigin().x + 37.5, newFruit->getOrigin().y + 37.5);
 								newFruit->split = true;
 								newFruit->dead = false;
 								fruit.push_back(newFruit);
 								Fruit *newFruit2 = new Fruit(fruit[i]->isBomb, fruit[i]->type, fruit[i]->isBomb ? bombTexture3 : (fruitTextures[fruit[i]->type + 2]));
 								newFruit2->ySpeed = fruit[i]->ySpeed - 0.5;
 								newFruit2->setPosition(fruit[i]->getPosition());
-								newFruit2->setOrigin(newFruit2->getOrigin().x + 25, newFruit2->getOrigin().y + 25);
+								newFruit2->setOrigin(newFruit2->getOrigin().x + 37.5, newFruit2->getOrigin().y + 37.5);
 								newFruit2->split = true;
 								newFruit2->dead = false;
 								fruit.push_back(newFruit2);
@@ -239,13 +248,14 @@ int main(int argc, char** argv) {
 								}
 							}
 						}
-						if (fruit[i]->getPosition().y > screenHeight && fruit[i]->ySpeed > 0) {
+						if (!fruit[i]->dead && !fruit[i]->split && fruit[i]->getPosition().y > screenHeight && fruit[i]->ySpeed > 0) {
 							if (!fruit[i]->isBomb)
 								fails++;
 							fruit[i]->dead = true;
 						}
-						fruit[i]->draw(*window);
 					}
+				}
+				if (gameRunning) {
 					for (int i = 0; i < fruit.size(); i++) {
 						if (fruit[i]->dead) {
 							swap(fruit[i], fruit.back());
@@ -253,6 +263,8 @@ int main(int argc, char** argv) {
 							cout << "fruit gone" << endl;
 						}
 					}
+				}
+				if (gameRunning) {
 					pointers.push_back(new Point(sordX, sordY));
 					for (int i = 1; i < pointers.size(); i++) {
 						if (pointers[i]) {
@@ -265,24 +277,53 @@ int main(int argc, char** argv) {
 					}
 				}
 			}
-			sf::Text text;
-			text.setFont(font);
+			for (int i = 0; i < fruit.size(); i++) {
+				fruit[i]->draw(*window);
+			}
+			sf::Text levelText;
+			levelText.setFont(font);
 			std::ostringstream oss;
-			oss << score;
-			text.setString(oss.str());
-			text.setCharacterSize(24);
-			text.setColor(sf::Color::Cyan);
-			text.setPosition(screenWidth - text.findCharacterPos(oss.str().length() - 1).x - text.findCharacterPos(0).x - 30, screenHeight - 24 - 20);
-			window->draw(text);
+			oss << level;
+			string levelWords = "level: " + oss.str();
+			levelText.setString(levelWords);
+			levelText.setCharacterSize(24);
+			levelText.setColor(sf::Color::Cyan);
+			levelText.setPosition(screenWidth - levelText.findCharacterPos(levelWords.length() - 1).x - levelText.findCharacterPos(0).x - 30, screenHeight - 88);
+			window->draw(levelText);
+			sf::Text scoreText;
+			scoreText.setFont(font);
+			std::ostringstream osss;
+			osss << score;
+			string scoreWords = "Score: " + osss.str();
+			scoreText.setString(scoreWords);
+			scoreText.setCharacterSize(24);
+			scoreText.setColor(sf::Color::Cyan);
+			scoreText.setPosition(screenWidth - scoreText.findCharacterPos(scoreWords.length() - 1).x - scoreText.findCharacterPos(0).x - 30, screenHeight - 44);
+			window->draw(scoreText);
+
 			x1Sprite.setPosition(screenWidth - 180, 10);
 			x2Sprite.setPosition(screenWidth - 120, 10);
 			x3Sprite.setPosition(screenWidth - 60, 10);
-			if (fails > 1)
+			if (fails > 0)
 				window->draw(x1Sprite);
-			if (fails > 2)
+			if (fails > 1)
 				window->draw(x2Sprite);
-			if (fails > 3)
+			if (fails > 2)
 				window->draw(x3Sprite);
+			if (fails > 3) {
+				boundsSet = 0;
+				gameRunning = false;
+				int numFruit = 6;
+				vector<Fruit*> fruit;
+				armX = 0;
+				armY = 0;
+				sordX = 1000;
+				sordY = 1000;
+				score = 0;
+				level = 1;
+				fruitsKilled = 0;
+				fails = 0;
+			}
 			window->setView(window->getDefaultView());
 			window->display();
 		}
