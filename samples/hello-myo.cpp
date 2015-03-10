@@ -1,30 +1,21 @@
 #define _USE_MATH_DEFINES
-#include <cmath>
-#include <iostream>
-#include <iomanip>
-#include <stdexcept>
-#include <string>
-#include <algorithm>
-#include "Point.h"
+//#include <stdexcept>
+//#include <string>
+//#include <algorithm>
+//#include "Point.h"
 #include "Fruit.h"
 #include <myo/myo.hpp>
-#include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
+//#include <SFML/Graphics.hpp>
+//#include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
 #include <sstream>
 
-
 using namespace std;
 
-int boundsSet = 0;
-int screenWidth = 1366, screenHeight = 768;
 bool gameRunning = false;
-int numFruit = 6;
+int numFruit = 6, score = 0, level = 1, fruitsKilled = 0, fails = 0, screenWidth = 1366, screenHeight = 768, boundsSet = 0;
 vector<Fruit*> fruit;
-double armX = 0, armY = 0, sordX = 1000, sordY = 1000;
-double width, height;
-double fruitTime = 2.0;
-int score = 0, level = 1, fruitsKilled = 0, fails = 0;
+double armX = 0, armY = 0, sordX = 1000, sordY = 1000, width, height, fruitTime = 2.0;
 
 class DataCollector: public myo::DeviceListener {
 public:
@@ -40,11 +31,11 @@ public:
 	}
 
 	void onOrientationData(myo::Myo* myo, uint64_t timestamp, const myo::Quaternion<float>& quat) {
-		using std::atan2;
-		using std::asin;
-		using std::sqrt;
-		using std::max;
-		using std::min;
+		//using std::atan2;
+		//using std::asin;
+		//using std::sqrt;
+		//using std::max;
+		//using std::min;
 
 		//float roll = atan2(2.0f * (quat.w() * quat.x() + quat.y() * quat.z()), 1.0f - 2.0f * (quat.x() * quat.x() + quat.y() * quat.y()));
 		float pitch = asin(max(-1.0f, min(1.0f, 2.0f * (quat.w() * quat.y() - quat.z() * quat.x()))));
@@ -113,16 +104,14 @@ public:
 
 	bool onArm;
 	myo::Arm whichArm;
-
 	bool isUnlocked;
-
 	int roll_r, pitch_y, yaw_x;
 	myo::Pose currentPose;
 };
 
 int main(int argc, char** argv) {
 	sf::RenderWindow* window(new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), "Myo-Fruit", sf::Style::None));
-	window->setMouseCursorVisible(false);
+	window->setMouseCursorVisible(true);
 	sf::View view(sf::FloatRect(0, 0, screenWidth, screenHeight));
 	window->setView(view);
 	sf::Font font;
@@ -161,9 +150,11 @@ int main(int argc, char** argv) {
 		window->setFramerateLimit(0.f);
 		myo::Hub hub("com.justin.myo-fruit-ninja");
 		cout << "Attempting to find a Myo..." << endl;
-		myo::Myo* myo = hub.waitForMyo(10000);
-		if (!myo)
-			throw runtime_error("Unable to find a Myo!");
+		myo::Myo* myo = hub.waitForMyo(1000);
+		if (!myo) {
+			cout << "Unable to find a Myo!" << endl;
+			return 0;
+		}
 		cout << "Connected to a Myo armband!" << endl << endl;
 		myo->unlock(myo::Myo::unlockHold);
 		DataCollector collector;
@@ -180,7 +171,8 @@ int main(int argc, char** argv) {
 		}
 		hub.addListener(&collector);
 		while (window->isOpen()) {
-			hub.run(10);
+			if (myo)
+				hub.run(10);
 			sf::Event event;
 			while (window->pollEvent(event)) {
 				if (event.type == sf::Event::Closed)
@@ -208,8 +200,8 @@ int main(int argc, char** argv) {
 						bool isBomb = rand() % 5 == 1;
 						int type = (rand() % numFruit) * 3;
 						Fruit *newFruit = new Fruit(isBomb, type, isBomb ? bombTexture1 : (fruitTextures[type]));
-						newFruit->split = false;
-						newFruit->dead = false;
+						newFruit->setSplit(false);
+						newFruit->setDead(false);
 						newFruit->setOrigin(newFruit->getOrigin().x + 37.5, newFruit->getOrigin().y + 37.5);
 						fruit.push_back(newFruit);
 						clock.restart();
@@ -218,23 +210,23 @@ int main(int argc, char** argv) {
 					for (int i = 0; i < fruit.size(); i++) {
 						fruit[i]->fly();
 						for (int j = 0; j < pointers.size(); j++) {
-							if (pointers[j] && !fruit[i]->dead && !fruit[i]->split && abs(fruit[i]->getPosition().x - pointers[j]->x) < 37.5 && abs(fruit[i]->getPosition().y - pointers[j]->y) < 37.5) {
-								Fruit *newFruit = new Fruit(fruit[i]->isBomb, fruit[i]->type, fruit[i]->isBomb ? bombTexture2 : (fruitTextures[fruit[i]->type + 1]));
-								newFruit->ySpeed = fruit[i]->ySpeed - 0.5;
+							if (pointers[j] && !fruit[i]->isDead() && !fruit[i]->isSplit() && abs(fruit[i]->getPosition().x - pointers[j]->getX()) < 37.5 && abs(fruit[i]->getPosition().y - pointers[j]->getY()) < 37.5) {
+								Fruit *newFruit = new Fruit(fruit[i]->isBomb(), fruit[i]->getType(), fruit[i]->isBomb() ? bombTexture2 : (fruitTextures[fruit[i]->getType() + 1]));
+								newFruit->setYVelocity(fruit[i]->getYVelocity() - 0.5);
 								newFruit->setPosition(fruit[i]->getPosition());
 								newFruit->setOrigin(newFruit->getOrigin().x + 37.5, newFruit->getOrigin().y + 37.5);
-								newFruit->split = true;
-								newFruit->dead = false;
+								newFruit->setSplit(true);
+								newFruit->setDead(false);
 								fruit.push_back(newFruit);
-								Fruit *newFruit2 = new Fruit(fruit[i]->isBomb, fruit[i]->type, fruit[i]->isBomb ? bombTexture3 : (fruitTextures[fruit[i]->type + 2]));
-								newFruit2->ySpeed = fruit[i]->ySpeed - 0.5;
+								Fruit *newFruit2 = new Fruit(fruit[i]->isBomb(), fruit[i]->getType(), fruit[i]->isBomb() ? bombTexture3 : (fruitTextures[fruit[i]->getType() + 2]));
+								newFruit2->setYVelocity(fruit[i]->getYVelocity() - 0.5);
 								newFruit2->setPosition(fruit[i]->getPosition());
 								newFruit2->setOrigin(newFruit2->getOrigin().x + 37.5, newFruit2->getOrigin().y + 37.5);
-								newFruit2->split = true;
-								newFruit2->dead = false;
+								newFruit2->setSplit(true);
+								newFruit2->setDead(false);
 								fruit.push_back(newFruit2);
-								fruit[i]->dead = true;
-								if (fruit[i]->isBomb) {
+								fruit[i]->setDead(true);
+								if (fruit[i]->isBomb()) {
 									myo->vibrate(myo::Myo::vibrationShort);
 									bombSound.play();
 									fails++;
@@ -242,22 +234,22 @@ int main(int argc, char** argv) {
 								} else {
 									splashSound.play();
 									fruitsKilled++;
-									level = fruitsKilled % 10;
+									level = fruitsKilled / 5;
 									fruitTime = 2 - (level*0.1);
 									score += 50 * level;
 								}
 							}
 						}
-						if (!fruit[i]->dead && !fruit[i]->split && fruit[i]->getPosition().y > screenHeight && fruit[i]->ySpeed > 0) {
-							if (!fruit[i]->isBomb)
+						if (!fruit[i]->isDead() && !fruit[i]->isSplit() && fruit[i]->getPosition().y > screenHeight && fruit[i]->getYVelocity() > 0) {
+							if (!fruit[i]->isBomb())
 								fails++;
-							fruit[i]->dead = true;
+							fruit[i]->setDead(true);
 						}
 					}
 				}
 				if (gameRunning) {
 					for (int i = 0; i < fruit.size(); i++) {
-						if (fruit[i]->dead) {
+						if (fruit[i]->isDead()) {
 							swap(fruit[i], fruit.back());
 							fruit.pop_back();
 							cout << "fruit gone" << endl;
@@ -268,9 +260,9 @@ int main(int argc, char** argv) {
 					pointers.push_back(new Point(sordX, sordY));
 					for (int i = 1; i < pointers.size(); i++) {
 						if (pointers[i]) {
-							sf::Vertex line[] = {sf::Vertex(sf::Vector2f(pointers[i - 1]->x, pointers[i - 1]->y)), sf::Vertex(sf::Vector2f(pointers[i]->x, pointers[i]->y)), };
+							sf::Vertex line[] = {sf::Vertex(sf::Vector2f(pointers[i - 1]->getX(), pointers[i - 1]->getY())), sf::Vertex(sf::Vector2f(pointers[i]->getX(), pointers[i]->getY())), };
 							window->draw(line, 2, sf::Lines);
-							if (i>25) {
+							if (i > 25) {
 								pointers.erase(pointers.begin());
 							}
 						}
@@ -322,6 +314,7 @@ int main(int argc, char** argv) {
 				level = 1;
 				fruitsKilled = 0;
 				fails = 0;
+				fruitTime = 2.0;
 			}
 			window->setView(window->getDefaultView());
 			window->display();
