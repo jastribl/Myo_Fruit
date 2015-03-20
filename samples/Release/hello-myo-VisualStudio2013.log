@@ -1,12 +1,6 @@
-﻿Build started 3/20/2015 4:35:12 PM.
+﻿Build started 3/20/2015 4:49:13 PM.
      1>Project "J:\Justin\My Documents\GitHub\Myo_Fruit\samples\hello-myo-VisualStudio2013.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\SFML\include /I..\include /Zi /nologo /W3 /WX- /O2 /Oy- /D WIN32 /D NDEBUG /D _CONSOLE /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Fruit.cpp
-         Fruit.cpp
-     1>Fruit.cpp(8): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>Fruit.cpp(53): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>Fruit.cpp(54): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-       Link:
+     1>Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"J:\Justin\My Documents\GitHub\Myo_Fruit\samples\Release\hello-myo-VisualStudio2013.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\lib /LIBPATH:C:\SFML\lib myo32.lib "sfml-graphics.lib" "sfml-window.lib" "sfml-system.lib" "sfml-audio.lib" "sfml-window-d.lib" "sfml-system-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"J:\Justin\My Documents\GitHub\Myo_Fruit\samples\Release\hello-myo-VisualStudio2013.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"J:\Justin\My Documents\GitHub\Myo_Fruit\samples\Release\hello-myo-VisualStudio2013.lib" /MACHINE:X86 /SAFESEH Release\Fruit.obj
          "Release\hello-myo.obj"
          Release\Point.obj
@@ -21,4 +15,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.95
+Time Elapsed 00:00:00.24
