@@ -1,45 +1,61 @@
-//#include "Point.h"
-//#include <SFML/Graphics.hpp>
-//
-//using namespace std;
-//class Fruit:public sf::Sprite {
-//
-//	int  xSpeed, ySpeed;
-//
-//public:
-//
-//
-//	Fruit(/*sf::Texture& tex*/) {
-//		setX(rand() % 1366);
-//		setY(rand() % 768);
-//		xSpeed = 5;
-//		ySpeed = -10;
-//		//setTexture(tex);
-//	}
-//
-//	int getX() {
-//		return getX();
-//	}
-//
-//	int getY() {
-//		return getY();
-//	}
-//
-//	void setVelocity(int xGiven, int yGiven) {
-//		xSpeed = xGiven;
-//		ySpeed = yGiven;
-//	}
-//
-//	void setX(int xGiven) {
-//		setX(xGiven);
-//	}
-//
-//	void setY(int yGiven) {
-//		setY(yGiven);
-//	}
-//
-//	void fly() {
-//		ySpeed -= 1;
-//		setPosition(getX() + xSpeed, getY() + ySpeed);
-//	}
-//};
+#include "Fruit.h"
+
+Fruit::Fruit (bool bombGiven, bool deadGiven, bool splitGiven, int typeGiven, sf::Texture& tex, double yVelocity)
+	:bomb (bombGiven), dead (deadGiven), split (splitGiven), type (typeGiven),
+	velocity ((1 + rand () % 6) * ((getPosition ().x > (1366 / 2)) ? -1 : 1), yVelocity),
+	rSpeed (rand () % 5 * ((rand () % 2 == 1) ? -1 : 1)),
+	rotation (0) {
+	setPosition (rand () % 1366, 868);
+	setTexture (tex);
+}
+
+bool Fruit::isBomb () {
+	return bomb;
+};
+
+bool Fruit::isSplit () {
+	return split;
+};
+
+bool Fruit::isDead () {
+	return dead;
+};
+
+
+Point Fruit::getVelocity () {
+	return velocity;
+};
+
+double Fruit::getXSpeed () {
+	return velocity.getX ();
+};
+
+double Fruit::getYSpeed () {
+	return velocity.getY ();
+};
+
+int Fruit::getType () {
+	return type;
+}
+
+void Fruit::setBomb (bool bombGiven) {
+	bomb = bombGiven;
+}
+
+void Fruit::setDead (bool deadGiven) {
+	dead = deadGiven;
+}
+
+void Fruit::fly () {
+	if (!dead) {
+		velocity.addY (0.2f);
+		rotation += rSpeed;
+		setPosition (getPosition ().x + velocity.getX (), getPosition ().y + velocity.getY ());
+		setRotation (rotation);
+	}
+}
+
+void Fruit::draw (sf::RenderWindow& window) {
+	if (!dead)
+		window.draw (*this);
+}
