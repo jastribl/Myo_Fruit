@@ -1,18 +1,5 @@
-﻿Build started 3/20/2015 4:49:13 PM.
-     1>Project "J:\Justin\My Documents\GitHub\Myo_Fruit\samples\hello-myo-VisualStudio2013.vcxproj" on node 2 (Build target(s)).
-     1>Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"J:\Justin\My Documents\GitHub\Myo_Fruit\samples\Release\hello-myo-VisualStudio2013.exe" /INCREMENTAL /NOLOGO /LIBPATH:..\lib /LIBPATH:C:\SFML\lib myo32.lib "sfml-graphics.lib" "sfml-window.lib" "sfml-system.lib" "sfml-audio.lib" "sfml-window-d.lib" "sfml-system-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"J:\Justin\My Documents\GitHub\Myo_Fruit\samples\Release\hello-myo-VisualStudio2013.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"J:\Justin\My Documents\GitHub\Myo_Fruit\samples\Release\hello-myo-VisualStudio2013.lib" /MACHINE:X86 /SAFESEH Release\Fruit.obj
-         "Release\hello-myo.obj"
-         Release\Point.obj
-     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:ICF' specification
-         hello-myo-VisualStudio2013.vcxproj -> J:\Justin\My Documents\GitHub\Myo_Fruit\samples\Release\hello-myo-VisualStudio2013.exe
-       PostBuildEvent:
-         COPY "..\bin\myo32.dll" "J:\Justin\My Documents\GitHub\Myo_Fruit\samples\Release\"
-               
-         :VCEnd
-                 1 file(s) copied.
-     1>Done Building Project "J:\Justin\My Documents\GitHub\Myo_Fruit\samples\hello-myo-VisualStudio2013.vcxproj" (Build target(s)).
+﻿Build started 3/20/2015 5:18:31 PM.
 
 Build succeeded.
 
-Time Elapsed 00:00:00.24
+Time Elapsed 00:00:00.03
